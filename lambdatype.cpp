@@ -1,21 +1,22 @@
 #include <iostream>
-#include <functional>
+#include <typeinfo>
 
 int main() {
-    // A lambda expression
-    auto lambda = [](int x) { return x * x; };
+    int x = 10;
+    // Lambda function capturing 'x' by copy - () removed for comparison, as no args...better?
+    auto squareIt = [x] {
+        return x * x;
+    };
+    // Call the lambda function, store returned value
+    int result = squareIt();
 
-    // A function pointer
-    int (*funcPtr)(int) = [](int x) { return x + x; };
+    // Print the result
+    std::cout << "Result: " << result << std::endl;
 
-    // std::function erases the concrete types of lambda and funcPtr, but specifies the shared interface int->f()->int
-    std::function<int(int)> func;
+    // Print the original value of 'x' (unchanged)
+    std::cout << "Original value of x: " << x << std::endl;
 
-    func = lambda;
-    std::cout << "Lambda result: " << func(5) << std::endl; // Output: 25
-
-    func = funcPtr;
-    std::cout << "Function pointer result: " << func(5) << std::endl; // Output: 10
-
+    // Attempting to print the type of squareIt
+    std::cout << "Type of squareIt: " << typeid(squareIt).name() << std::endl;
     return 0;
 }
